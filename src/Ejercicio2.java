@@ -18,27 +18,40 @@ public class Ejercicio2 implements Runnable{
     }
 
     /**
-     * metodo que le llegan 4 hilos simultaneos y tienen un random entre 0,1 y 10 segundos en ser atendidos
-     * tras ser atendidos daran un mensaje y entrara un nuevo hilo hasta que entren 10 hilos
+     * metodo que comprueba si es hay disponible hueco en la carniceria y si no va a la charcuteria y lo mismo pero
+     * al reves y lo demas es igual que en ejercicio anterior
      */
     @Override
     public void run() {
         try {
-
+            if (carniceria.availablePermits() > 0) {
                 carniceria.acquire();
                 System.out.println("El " + Thread.currentThread().getName() + " está en la carniceria");
                 Thread.sleep((int) (Math.random() * 10000));
                 System.out.println("El " + Thread.currentThread().getName() + " ha terminado en la carnicería");
                 carniceria.release();
-
-
-
+            } else {
                 charcuteria.acquire();
                 System.out.println("El " + Thread.currentThread().getName() + " está en la charcuteria");
                 Thread.sleep((int) (Math.random() * 10000));
                 System.out.println("El " + Thread.currentThread().getName() + " ha terminado en la charcuteria");
                 charcuteria.release();
+            }
 
+
+            if (charcuteria.availablePermits() > 0) {
+                charcuteria.acquire();
+                System.out.println("El " + Thread.currentThread().getName() + " está en la charcuteria");
+                Thread.sleep((int) (Math.random() * 10000));
+                System.out.println("El " + Thread.currentThread().getName() + " ha terminado en la charcuteria");
+                charcuteria.release();
+            } else {
+                carniceria.acquire();
+                System.out.println("El " + Thread.currentThread().getName() + " está en la carniceria");
+                Thread.sleep((int) (Math.random() * 10000));
+                System.out.println("El " + Thread.currentThread().getName() + " ha terminado en la carnicería");
+                carniceria.release();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
